@@ -1,0 +1,66 @@
+@import "tailwindcss";
+
+@theme {
+  --color-midnight: #1A1A3A;
+  --color-midnight-light: #2A2A4A;
+  --color-midnight-dark: #12122A;
+  --color-silver: #C0C0C0;
+  --color-silver-light: #D8D8D8;
+  --color-silver-dark: #A0A0A0;
+  --color-warm-white: #FAF9F7;
+  --color-warm-white-dark: #F0EFEC;
+  --color-gold: #C9A050;
+  --color-gold-light: #DDBB6E;
+  --color-gold-dark: #A8843A;
+  --font-heading: 'Playfair Display', serif;
+  --font-body: 'Lato', sans-serif;
+}
+
+body {
+  font-family: var(--font-body);
+  background-color: var(--color-warm-white);
+  color: var(--color-midnight);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+}
+
+.gold-frame-reveal {
+  position: relative;
+  overflow: hidden;
+}
+
+.gold-frame-reveal::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border: 2px solid transparent;
+  transition: border-color 0.4s ease, inset 0.4s ease;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.gold-frame-reveal:hover::before {
+  border-color: var(--color-gold);
+  inset: 8px;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.shimmer {
+  background: linear-gradient(90deg, transparent, rgba(201,160,80,0.15), transparent);
+  background-size: 200% 100%;
+  animation: shimmer 3s infinite;
+}

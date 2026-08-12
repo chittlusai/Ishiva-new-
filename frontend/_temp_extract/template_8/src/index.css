@@ -1,0 +1,79 @@
+@import "tailwindcss";
+
+@theme {
+  --color-teal-500: #00BCD4;
+  --color-teal-600: #0097A7;
+  --color-lime-500: #76C442;
+  --color-lime-600: #5EA131;
+  --color-light-grey: #F4F4F4;
+  
+  --font-heading: "Poppins", sans-serif;
+  --font-body: "Open Sans", sans-serif;
+}
+
+@layer base {
+  body {
+    @apply font-body bg-light-grey text-gray-800;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-heading font-bold;
+  }
+}
+
+@keyframes sparkle-spin {
+  0% { transform: scale(0) rotate(0deg); opacity: 0; }
+  50% { transform: scale(1) rotate(180deg); opacity: 1; }
+  100% { transform: scale(0) rotate(360deg); opacity: 0; }
+}
+
+.sparkle-card {
+  position: relative;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.sparkle-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 25px -5px rgba(0, 188, 212, 0.2), 0 8px 10px -6px rgba(0, 188, 212, 0.1);
+}
+
+.sparkle-card::before, .sparkle-card::after {
+  content: '✨';
+  position: absolute;
+  opacity: 0;
+  font-size: 1.5rem;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.sparkle-card::before {
+  top: -10px;
+  left: -10px;
+}
+
+.sparkle-card::after {
+  bottom: -10px;
+  right: -10px;
+}
+
+.sparkle-card:hover::before {
+  animation: sparkle-spin 1.5s infinite;
+}
+
+.sparkle-card:hover::after {
+  animation: sparkle-spin 1.5s infinite 0.5s;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #F4F4F4;
+}
+::-webkit-scrollbar-thumb {
+  background: #00BCD4;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #0097A7;
+}

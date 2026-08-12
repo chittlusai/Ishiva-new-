@@ -1,0 +1,41 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --sw-purple: #2c0a4a;
+    --sw-yellow: #f5d000;
+    --sw-white: #ffffff;
+    --sw-grey: #666666;
+  }
+
+  html {
+    font-family: "Open Sans", ui-sans-serif, system-ui, -apple-system, Segoe UI,
+      Roboto, Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji";
+  }
+
+  body {
+    background: radial-gradient(
+        circle at 20% 0%,
+        rgba(245, 208, 0, 0.08),
+        transparent 45%
+      ),
+      radial-gradient(
+        circle at 80% 20%,
+        rgba(255, 255, 255, 0.05),
+        transparent 50%
+      ),
+      linear-gradient(180deg, #2c0a4a 0%, #180527 55%, #12031c 100%);
+    color: var(--sw-white);
+  }
+}
+
+@layer utilities {
+  .font-heading {
+    font-family: "Oswald", ui-sans-serif, system-ui, -apple-system, Segoe UI,
+      Roboto, Arial, "Noto Sans";
+  }
+
+  .bg-white\/7 {
+    background-color: rgba(255, 255, 255, 0.07);
+  }
+}

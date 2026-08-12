@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>iShiva Digital Technology | Home & Kitchen Store</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;1,400&family=Source+Sans+Pro:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        warmWhite: '#FAF9F7',
+                        terracotta: '#D4704A',
+                        softGreen: '#7A9E7E',
+                        darkBrown: '#2A1A0A',
+                        softGray: '#E5E5E5'
+                    },
+                    fontFamily: {
+                        serif: ['Merriweather', 'serif'],
+                        sans: ['Source Sans Pro', 'sans-serif'],
+                    },
+                    backgroundImage: {
+                        'hero-pattern': "url('https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80')",
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #FAF9F7;
+            color: #2A1A0A;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Smooth Scrolling */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Custom Animations */
+        .fade-in {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .slide-up-hover {
+            transform: translateY(100%);
+            transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+
+        .group:hover .slide-up-hover {
+            transform: translateY(0);
+        }
+
+        /* Swatch Selection */
+        .swatch-radio:checked + div {
+            ring-width: 2px;
+            ring-color: #2A1A0A;
+            transform: scale(1.1);
+        }
+
+        /* Hide scrollbar for gallery but allow scroll */
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        /* Interactive Nav State */
+        .nav-link.active {
+            color: #D4704A;
+            border-bottom: 2px solid #D4704A;
+        }
+        
+        .page-section {
+            display: none;
+        }
+        .page-section.active-page {
+            display: block;
+        }
+    </style>
+</head>
+<body class="font-sans flex flex-col min-h-screen">
+
+    <!-- Navigation -->
+    <header class="fixed w-full top-0 z-50 bg-warmWhite/95 backdrop-blur-sm shadow-sm transition-all duration-300">
+        <div class="container mx-auto px-4 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <!-- Logo -->
+                <a href="#" onclick="switchPage('home')" class="flex items-center gap-2 group">
+                    <i class="fa-solid fa-leaf text-2xl text-terracotta group-hover:rotate-12 transition-transform"></i>
+                    <span class="font-serif text-2xl font-bold tracking-tight text-darkBrown">iShiva</span>
+                </a>
+
+                <!-- Desktop Nav -->
+                <nav class="hidden md:flex space-x-8 items-center">
+                    <button onclick="switchPage('home')" class="nav-link active text-darkBrown hover:text-terracotta font-medium transition-colors pb-1">Home</button>
+                    <button onclick="switchPage('rooms')" class="nav-link text-darkBrown hover:text-terracotta font-medium transition-colors pb-1">Shop by Room</button>
+                    <button onclick="switchPage('recipes')" class="nav-link text-darkBrown hover:text-terracotta font-medium transition-colors pb-1">Recipes</button>
+                </nav>
+
+                <!-- Icons -->
+                <div class="flex items-center space-x-6">
+                    <button onclick="switchPage('wishlist')" class="text-darkBrown hover:text-terracotta relative group">
+                        <i class="fa-regular fa-heart text-xl"></i>
+                        <span class="absolute -top-2 -right-2 bg-terracotta text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">2</span>
+                    </button>
+                    <button onclick="switchPage('cart')" class="text-darkBrown hover:text-terracotta relative group">
+                        <i class="fa-solid fa-bag-shopping text-xl"></i>
+                        <span id="cart-count" class="absolute -top-2 -right-2 bg-darkBrown text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center">0</span>
+                    </button>
+                    <!-- Mobile Menu Button -->
+                    <button class="md:hidden text-darkBrown text-xl" onclick="toggleMobileMenu()">
+                        <i class="fa-solid fa-bars"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Mobile Menu (Hidden by default) -->
+        <div id="mobile-menu" class="hidden md:hidden bg-warmWhite border-t border-gray-100 absolute w-full left-0 shadow-lg">
+            <div class="flex flex-col p-4 space-y-4">
+                <button onclick="switchPage('home'); toggleMobileMenu()" class="text-left font-medium text-darkBrown">Home</button>
+                <button onclick="switchPage('rooms'); toggleMobileMenu()" class="text-left font-medium text-darkBrown">Rooms</button>
+                <button onclick="switchPage('recipes'); toggleMobileMenu()" class="text-left font-medium text-darkBrown">Recipes</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="flex-grow pt-20">
+
+        <!-- PAGE: HOME -->
+        <div id="page-home" class="page-section active-page fade-in">
+            
+            <!-- Hero Section -->
+            <section class="relative h-[85vh] w-full flex items-center bg-hero-pattern bg-cover bg-center bg-no-repeat">
+                <div class="absolute inset-0 bg-black/20"></div>
+                <div class="container mx-auto px-4 relative z-10 text-white">
+                    <div class="max-w-2xl pt-20">
+                        <span class="uppercase tracking-[0.2em] text-sm font-semibold mb-4 block text-softGreen">New Collection 2024</span>
+                        <h1 class="font-serif text-5xl md:text-7xl font-bold leading-tight mb-6 drop-shadow-lg">Elevate Your <br><span class="italic font-light text-warmWhite">Sanctuary</span></h1>
+                        <p class="text-lg md:text-xl mb-8 text-gray-100 max-w-lg">Discover curated home and kitchen essentials designed for modern living. Crafted with care, styled for life.</p>
+                        <div class="flex flex-wrap gap-4">
+                            <button onclick="switchPage('rooms')" class="bg-terracotta hover:bg-terracotta/90 text-white px-8 py-3.5 rounded-sm font-medium transition-all transform hover:-translate-y-1 shadow-lg">
+                                Shop Collection
+                            </button>
+                            <button onclick="switchPage('recipes')" class="bg-white/10 backdrop-blur-md hover:bg-white/20 text-white border border-white/30 px-8 py-3.5 rounded-sm font-medium transition-all">
+                                View Recipes
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Shop by Room -->
+            <section class="py-20 bg-warmWhite">
+                <div class="container mx-auto px-4">
+                    <div class="text-center mb-16">
+                        <h2 class="font-serif text-3xl md:text-4xl text-darkBrown mb-3">Shop by Room</h2>
+                        <div class="w-16 h-1 bg-softGreen mx-auto"></div>
+                        <p class="mt-4 text-gray-600 max-w-lg mx-auto">Transform every corner of your home with our specialized collections.</p>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <!-- Kitchen -->
+                        <div onclick="filterRoom('kitchen')" class="group relative h-96 overflow-hidden cursor-pointer shadow-md rounded-sm">
+                            <img src="https://images.unsplash.com/photo-1556910103-1c02745a30bf?auto=format&fit=crop&w=800&q=80" alt="Kitchen" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                            <div class="absolute inset-0 bg-black/30 group-hover:bg-black/40 transition-colors"></div>
+                            <div class="absolute bottom-0 left-0 w-full p-6 bg-gradient-to-t from-black/80 to-transparent">
+                                <div class="slide-up-hover flex items-end justify-between">
+                                    <div>
+                                        <h3 class="font-serif text-2xl text-white mb-1">Kitchen</h3>
+                                        <p class="text-gray-300 text-sm">Essentials & Dining</p>
+                                    </div>
+                                    <span class="bg-terracotta text-white p-3 rounded-full"><i class="fa-solid fa-arrow-right"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Living -->
+                        <div onclick="filterRoom('living')" class="group relative h-96 overflow-hidden cursor-pointer shadow-md rounded-sm">
+                            <img src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=800&q=80" alt="Living" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                            <div class="absolute inset-0 bg-black/30 group-hover:bg-black/40 transition-colors"></div>
+                            <div class="absolute bottom-0 left-0 w-full p-6 bg-gradient-to-t from-black/80 to-transparent">
+                                <div class="slide-up-hover flex items-end justify-between">
+                                    <div>
+                                        <h3 class="font-serif text-2xl text-white mb-1">Living Room</h3>
+                                        <p class="text-gray-300 text-sm">Decor & Comfort</p>
+                                    </div>
+                                    <span class="bg-terracotta text-white p-3 rounded-full"><i class="fa-solid fa-arrow-right"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Bedroom -->
+                        <div onclick="filterRoom('bedroom')" class="group relative h-96 overflow-hidden cursor-pointer shadow-md rounded-sm">
+                            <img src="https://images.unsplash.com/photo-1616594039964-40891a909842?auto=format&fit=crop&w=800&q=80" alt="Bedroom" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                            <div class="absolute inset-0 bg-black/30 group-hover:bg-black/40 transition-colors"></div>
+                            <div class="absolute bottom-0 left-0 w-full p-6 bg-gradient-to-t from-black/80 to-transparent">
+                                <div class="slide-up-hover flex items-end justify-between">
+                                    <div>
+                                        <h3 class="font-serif text-2xl text-white mb-1">Bedroom</h3>
+                                        <p class="text-gray-300 text-sm">Linens & Lighting</p>
+                                    </div>
+                                    <span class="bg-terracotta text-white p-3 rounded-full"><i class="fa-solid fa-arrow-right"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Bath -->
+                        <div onclick="filterRoom('bath')" class="group relative h-80 overflow-hidden cursor-pointer shadow-md rounded-sm">
+                            <img src="https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?auto=format&fit=crop&w=800&q=80" alt="Bath" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                            <div class="absolute inset-0 bg-black/30 group-hover:bg-black/40 transition-colors"></div>
+                            <div class="absolute bottom-0 left-0 w-full p-6">
+                                <div class="slide-up-hover">
+                                    <h3 class="font-serif text-xl text-white">Bath</h3>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Outdoor -->
+                        <div onclick="filterRoom('outdoor')" class="group relative h-80 overflow-hidden cursor-pointer shadow-md rounded-sm lg:col-span-2">
+                            <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80" alt="Outdoor" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                            <div class="absolute inset-0 bg-black/30 group-hover:bg-black/40 transition-colors"></div>
+                            <div class="absolute bottom-0 left-0 w-full p-6">
+                                <div class="slide-up-hover">
+                                    <h3 class="font-serif text-xl text-white">Outdoor & Garden</h3>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- New Arrivals Grid -->
+            <section class="py-20 bg-white">
+                <div class="container mx-auto px-4">
+                    <div class="flex justify-between items-end mb-12">
+                        <div>
+                            <h2 class="font-serif text-3xl md:text-4xl text-darkBrown mb-2">New Arrivals</h2>
+                            <p class="text-gray-500">Fresh finds for your home.</p>
+                        </div>
+                        <button onclick="switchPage('rooms')" class="hidden md:block text-terracotta font-medium hover:underline">View All Products</button>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                        <!-- Product 1 -->
+                        <div class="group cursor-pointer">
+                            <div class="relative overflow-hidden rounded-sm mb-4 bg-gray-100 aspect-[3/4]">
+                                <img src="https://images.unsplash.com/photo-1595428774223-ef52624120d2?auto=format&fit=crop&w=600&q=80" alt="Product" class="w-full h-full object-cover mix-blend-multiply transition-transform duration-500 group-hover:scale-105">
+                                <div class="absolute top-3 left-3 bg-softGreen text-white text-xs px-2 py-1 rounded-sm">New</div>
+                                <button onclick="addToCart()" class="absolute bottom-4 right-4 bg-white text-darkBrown w-10 h-10 rounded-full shadow-md flex items-center justify-center translate-y-16 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300 hover:bg-terracotta hover:text-white">
+                                    <i class="fa-solid fa-plus"></i>
+                                </button>
+                            </div>
+                            <h3 class="font-serif text-lg text-darkBrown group-hover:text-terracotta transition-colors">Artisan Ceramic Bowl</h3>
+                            <p class="text-gray-500 text-sm mb-1">Kitchen</p>
+                            <p class="font-medium text-darkBrown">$34.00</p>
+                        </div>
+                        <!-- Product 2 -->
+                        <div class="group cursor-pointer">
+                            <div class="relative overflow-hidden rounded-sm mb-4 bg-gray-100 aspect-[3/4]">
+                                <img src="https://images.unsplash.com/photo-1616486338812-3dadae4b4f9d?auto=format&fit=crop&w=600&q=80" alt="Product" class="w-full h-full object-cover mix-blend-multiply transition-transform duration-500 group-hover:scale-105">
+                                <button onclick="addToCart()" class="absolute bottom-4 right-4 bg-white text-darkBrown w-10 h-10 rounded-full shadow-md flex items-center justify-center translate-y-16 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300 hover:bg-terracotta hover:text-white">
+                                    <i class="fa-solid fa-plus"></i>
+                                </button>
+                            </div>
+                            <h3 class="font-serif text-lg text-darkBrown group-hover:text-terracotta transition-colors">Modern Table Lamp</h3>
+                            <p class="text-gray-500 text-sm mb-1">Living</p>
+                            <p class="font-medium text-darkBrown">$89.00</p>
+                        </div>
+                        <!-- Product 3 -->
+                        <div class="group cursor-pointer">
+                            <div class="relative overflow-hidden rounded-sm mb-4 bg-gray-100 aspect-[3/4]">
+                                <img src="https://images.unsplash.com/photo-1584634731339-252c581abfc5?auto=format&fit=crop&w=600&q=80" alt="Product" class="w-full h-full object-cover mix-blend-multiply transition-transform duration-500 group-hover:scale-105">
+                                <button onclick="addToCart()" class="absolute bottom-4 right-4 bg-white text-darkBrown w-10 h-10 rounded-full shadow-md flex items-center justify-center translate-y-16 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300 hover:bg-terracotta hover:text-white">
+                                    <i class="fa-solid fa-plus"></i>
+                                </button>
+                            </div>
+                            <h3 class="font-serif text-lg text-darkBrown group-hover:text-terracotta transition-colors">Linen Throw Pillow</h3>
+                            <p class="text-gray-500 text-sm mb-1">Bedroom</p>
+                            <p class="font-medium text-darkBrown">$28.00</p>
+                        </div>
+                        <!-- Product 4 -->
+                        <div class="group cursor-pointer">
+                            <div class="relative overflow-hidden rounded-sm mb-4 bg-gray-100 aspect-[3/4]">
+                                <img src="https://images.unsplash.com/photo-1590794056226-79ef3a8147e1?auto=format&fit=crop&w=600&q=80" alt="Product" class="w-full h-full object-cover mix-blend-multiply transition-transform duration-500 group-hover:scale-105">
+                                <button onclick="addToCart()" class="absolute bottom-4 right-4 bg-white text-darkBrown w-10 h-10 rounded-full shadow-md flex items-center justify-center translate-y-16 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300 hover:bg-terracotta hover:text-white">
+                                    <i class="fa-solid fa-plus"></i>
+                                </button>
+                            </div>
+                            <h3 class="font-serif text-lg text-darkBrown group-hover:text-terracotta transition-colors">Organic Cotton Towel</h3>
+                            <p class="text-gray-500 text-sm mb-1">Bath</p>
+                            <p class="font-medium text-darkBrown">$22.00</p>
+                        </div>
+                    </div>
+                    <div class="mt-8 text-center md:hidden">
+                        <button onclick="switchPage('rooms')" class="text-terracotta font-medium border border-terracotta px-6 py-2 rounded-sm">View All Products</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Recipe Integration Section -->
+            <section class="py-20 bg-softGreen/10">
+                <div class="container mx-auto px-4">
+                    <div class="flex flex-col md:flex-row justify-between items-end mb-12 gap-4">
+                        <div class="max-w-xl">
+                            <span class="text-terracotta font-bold tracking-wider text-sm uppercase">iShiva Kitchen</span>
+                            <h2 class="font-serif text-3xl md:text-4xl text-darkBrown mt-2">Cook with Style</h2>
+                            <p class="text-gray-600 mt-2">Delicious recipes using our favorite kitchen tools.</p>
+                        </div>
+                        <button onclick="switchPage('recipes')" class="text-darkBrown font-medium hover:text-terracotta flex items-center gap-2">
+                            View All Recipes <i class="fa-solid fa-arrow-right-long"></i>
+                        </button>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                        <!-- Recipe 1 -->
+                        <article class="bg-white rounded-sm overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+                            <div class="h-64 overflow-hidden relative">
+                                <img src="https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?auto=format&fit=crop&w=800&q=80" class="w-full h-full object-cover transition-transform duration-500 hover:scale-105">
+                                <span class="absolute bottom-4 left-4 bg-white/90 backdrop-blur text-darkBrown text-xs font-bold px-3 py-1 rounded-full">30 Min</span>
+                            </div>
+                            <div class="p-6">
+                                <h3 class="font-serif text-xl text-darkBrown mb-2">Rustic Berry Pancakes</h3>
+                                <p class="text-gray-500 text-sm mb-4 line-clamp-2">Fluffy pancakes served with fresh berries and organic maple syrup.</p>
+                                <div class="flex items-center gap-2">
+                                    <img src="https://images.unsplash.com/photo-1595428774223-ef52624120d2?auto=format&fit=crop&w=100&q=80" class="w-6 h-6 rounded-full object-cover" alt="Tool">
+                                    <span class="text-xs text-gray-400">Uses: Artisan Mixing Bowl</span>
+                                </div>
+                            </div>
+                        </article>
+                        <!-- Recipe 2 -->
+                        <article class="bg-white rounded-sm overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+                            <div class="h-64 overflow-hidden relative">
+                                <img src="https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?auto=format&fit=crop&w=800&q=80" class="w-full h-full object-cover transition-transform duration-500 hover:scale-105">
+                                <span class="absolute bottom-4 left-4 bg-white/90 backdrop-blur text-darkBrown text-xs font-bold px-3 py-1 rounded-full">45 Min</span>
+                            </div>
+                            <div class="p-6">
+                                <h3 class="font-serif text-xl text-darkBrown mb-2">Garden Fresh Salad</h3>
+                                <p class="text-gray-500 text-sm mb-4 line-clamp-2">A vibrant mix of seasonal greens, tomatoes, and homemade vinaigrette.</p>
+                                <div class="flex items-center gap-2">
+                                    <img src="https://images.unsplash.com/photo-1603199634086-d8962f2cc2af?auto=format&fit=crop&w=100&q=80" class="w-6 h-6 rounded-full object-cover" alt="Tool">
+                                    <span class="text-xs text-gray-400">Uses: Wooden Salad Servers</span>
+                                </div>
+                            </div>
+                        </article>
+                        <!-- Recipe 3 -->
+                        <article class="bg-white rounded-sm overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+                            <div class="h-64 overflow-hidden relative">
+                                <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?auto=format&fit=crop&w=800&q=80" class="w-full h-full object-cover transition-transform duration-500 hover:scale-105">
+                                <span class="absolute bottom-4 left-4 bg-white/90 backdrop-blur text-darkBrown text-xs font-bold px-3 py-1 rounded-full">1 Hour</span>
+                            </div>
+                            <div class="p-6">
+                                <h3 class="font-serif text-xl text-darkBrown mb-2">Artisan Sourdough</h3>
+                                <p class="text-gray-500 text-sm mb-4 line-clamp-2">Crusty, golden sourdough bread baked to perfection in a Dutch oven.</p>
+                                <div class="flex items-center gap-2">
+                                    <img src="https://images.unsplash.com/photo-1584990347449-a2d4c2c044b9?auto=format&fit=crop&w=100&q=80" class="w-6 h-6 rounded-full object-cover" alt="Tool">
+                                    <span class="text-xs text-gray-400">Uses: Cast Iron Pot</span>
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Product Detail Feature (Interactive Demo) -->
+            <section class="py-20 bg-warmWhite">
+                <div class="container mx-auto px-4">
+                    <div class="flex flex-col lg:flex-row gap-12 items-center">
+                        <!-- Image Side -->
+                        <div class="w-full lg:w-1/2">
+                            <div class="bg-white p-8 rounded-sm shadow-lg relative">
+                                <div class="aspect-square bg-gray-50 rounded-sm mb-4 overflow-hidden">
+                                    <img id="detail-img" src="https://images.unsplash.com/photo-1610632380989-680fe40816c6?auto=format&fit=crop&w=800&q=80" class="w-full h-full object-cover mix-blend-multiply">
+                                </div>
+                                <div class="flex gap-4">
+                                    <div class="w-20 h-20 border-2 border-terracotta rounded-sm cursor-pointer overflow-hidden">
+                                        <img src="https://images.unsplash.com/photo-1610632380989-680fe40816c6?auto=format&fit=crop&w=200&q=80" class="w-full h-full object-cover">
+                                    </div>
+                                    <div class="w-20 h-20 border border-gray-200 rounded-sm cursor-pointer overflow-hidden hover:border-terracotta">
+                                        <img src="https://images.unsplash.com/photo-1594223274512-ad4803739b7c?auto=format&fit=crop&w=200&q=80" class="w-full h-full object-cover">
+                                    </div>
+                                    <div class="w-20 h-20 border border-gray-200 rounded-sm cursor-pointer overflow-hidden hover:border-terracotta">
+                                        <img src="https://images.unsplash.com/photo-1556911220-bff31c812dba?auto=format&fit=crop&w=200&q=80" class="w-full h-full object-cover">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Info Side -->
+                        <div class="w-full lg:w-1/2">
+                            <span class="text-softGreen font-bold tracking-wider text-sm uppercase">Featured Product</span>
+                            <h2 class="font-serif text-4xl text-darkBrown mt-2 mb-4">Sustainable Dinner Set</h2>
+                            <div class="flex items-center gap-4 mb-6">
+                                <span class="text-2xl font-medium text-darkBrown">$120.00</span>
+                                <div class="flex text-yellow-500 text-sm">
+                                    <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star-half-stroke"></i>
+                                </div>
+                                <span class="text-gray-400 text-sm">(42 Reviews)</span>
+                            </div>
+                            <p class="text-gray-600 mb-6 leading-relaxed">
+                                Crafted from organic, biodegradable materials, this dinner set brings an earthy elegance to your table. Durable, lightweight, and perfect for everyday dining.
+                            </p>
+
+                            <!-- Color Swatches -->
+                            <div class="mb-6">
+                                <span class="block text-sm font-medium text-darkBrown mb-3">Color: <span class="font-normal text-gray-500">Terracotta</span></span>
+                                <div class="flex gap-3">
+                                    <label class="cursor-pointer relative">
+                                        <input type="radio" name="color" class="swatch-radio hidden" checked onchange="changeProductColor(this, '#D4704A', 'https://images.unsplash.com/photo-1610632380989-680fe40816c6?auto=format&fit=crop&w=800&q=80')">
+                                        <div class="w-8 h-8 rounded-full bg-[#D4704A] shadow-sm transition-transform"></div>
+                                    </label>
+                                    <label class="cursor-pointer relative">
+                                        <input type="radio" name="color" class="swatch-radio hidden" onchange="changeProductColor(this, '#7A9E7E', 'https://images.unsplash.com/photo-1594223274512-ad4803739b7c?auto=format&fit=crop&w=800&q=80')">
+                                        <div class="w-8 h-8 rounded-full bg-[#7A9E7E] shadow-sm transition-transform"></div>
+                                    </label>
+                                    <label class="cursor-pointer relative">
+                                        <input type="radio" name="color" class="swatch-radio hidden" onchange="changeProductColor(this, '#2A1A0A', 'https://images.unsplash.com/photo-1556911220-bff31c812dba?auto=format&fit=crop&w=800&q=80')">
+                                        <div class="w-8 h-8 rounded-full bg-[#2A1A0A] shadow-sm transition-transform"></div>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- Material Selector -->
+                            <div class="mb-8">
+                                <span class="block text-sm font-medium text-darkBrown mb-3">Material</span>
+                                <div class="flex flex-wrap gap-2">
+                                    <button class="px-4 py-2 border border-darkBrown text-darkBrown rounded-sm hover:bg-darkBrown hover:text-white transition-colors text-sm bg-darkBrown text-white">Ceramic</button>
+                                    <button class="px-4 py-2 border border-gray-300 text-gray-600 rounded-sm hover:border-darkBrown hover:text-darkBrown transition-colors text-sm">Bamboo</button>
+                                </div>
+                            </div>
+
+                            <div class="flex gap-4">
+                                <button onclick="addToCart()" class="flex-1 bg-terracotta hover:bg-opacity-90 text-white py-4 rounded-sm font-medium transition-all shadow-md hover:shadow-lg">
+                                    Add to Cart - $120.00
+                                </button>
+                                <button class="w-14 border border-gray-300 text-gray-500 rounded-sm flex items-center justify-center hover:border-terracotta hover:text-terracotta transition-colors">
+                                    <i class="fa-regular fa-heart text-xl"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Customer Photo Gallery -->
+            <section class="py-20 overflow-hidden">
+                <div class="container mx-auto px-4 mb-10 text-center">
+                    <h2 class="font-serif text-3xl text-darkBrown">#iShivaStyle</h2>
+                    <p class="text-gray-500">Share your space with us on Instagram</p>
+                </div>
+                <div class="flex gap-4 overflow-x-auto hide-scrollbar px-4 pb-4">
+                    <div class="flex-shrink-0 w-64 h-64 md:w-80 md:h-80 rounded-sm overflow-hidden relative group cursor-pointer">
+                        <img src="https://images.unsplash.com/photo-1524758631624-e2822e304c36?auto=format&fit=crop&w=600&q=80" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                            <span class="text-white font-serif italic">@sarah_home</span>
+                        </div>
+                    </div>
+                    <div class="flex-shrink-0 w-64 h-64 md:w-80 md:h-80 rounded-sm overflow-hidden relative group cursor-pointer">
+                        <img src="https://images.unsplash.com/photo-1507089947368-19c1da9775ae?auto=format&fit=crop&w=600&q=80" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                            <span class="text-white font-serif italic">@mike.designs</span>
+                        </div>
+                    </div>
+                    <div class="flex-shrink-0 w-64 h-64 md:w-80 md:h-80 rounded-sm overflow-hidden relative group cursor-pointer">
+                        <img src="https://images.unsplash.com/photo-1513519245088-0e12902e5a38?auto=format&fit=crop&w=600&q=80" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                            <span class="text-white font-serif italic">@jess_kitchen</span>
+                        </div>
+                    </div>
+                    <div class="flex-shrink-0 w-64 h-64 md:w-80 md:h-80 rounded-sm overflow-hidden relative group cursor-pointer">
+                        <img src="https://images.unsplash.com/photo-1484101403633-562f891dc89a?auto=format&fit=crop&w=600&q=80" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                            <span class="text-white font-serif italic">@eco_life</span>
+                        </div>
+                    </div>
+                    <div class="flex-shrink-0 w-64 h-64 md:w-80 md:h-80 rounded-sm overflow-hidden relative group cursor-pointer">
+                        <img src="https://images.unsplash.com/photo-1540932296774-3ed692ead094?auto=format&fit=crop&w=600&q=80" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                            <span class="text-white font-serif italic">@the.cabin</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Bundle Discount Section -->
+            <section class="py-16 bg-darkBrown text-warmWhite text-center relative overflow-hidden">
+                <div class="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div>
+                <div class="container mx-auto px-4 relative z-10">
+                    <span class="inline-block bg-terracotta text-white px-3 py-1 text-xs font-bold uppercase tracking-wider mb-4 rounded-sm">Limited Time Offer</span>
+                    <h2 class="font-serif text-3xl md:text-5xl mb-6">The Essential Kitchen Bundle</h2>
+                    <p class="text-gray-300 max-w-2xl mx-auto mb-8 text-lg">Get the 4-piece ceramic set, wooden utensils, and a linen apron all together for an exclusive price.</p>
+                    <div class="flex flex-col sm:flex-row justify-center items-center gap-4">
+                        <div class="text-3xl font-bold">$180.00 <span class="text-lg text-gray-400 line-through font-normal ml-2">$240.00</span></div>
+                        <button onclick="addToCart()" class="bg-white text-darkBrown px-8 py-3 rounded-sm font-bold hover:bg-gray-100 transition-colors shadow-lg">
+                            Shop the Bundle
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Newsletter Signup -->
+            <section class="py-20 bg-softGreen/5">
+                <div class="container mx-auto px-4 max-w-2xl text-center">
+                    <i class="fa-regular fa-envelope text-3xl text-terracotta mb-4"></i>
+                    <h2 class="font-serif text-3xl text-darkBrown mb-3">Join Our Newsletter</h2>
+                    <p class="text-gray-600 mb-8">Subscribe to receive updates, access to exclusive deals, and more.</p>
+                    <form onsubmit="event.preventDefault(); alert('Thanks for subscribing!');" class="flex flex-col sm:flex-row gap-3">
+                        <input type="email" placeholder="Enter your email address" class="flex-1 bg-white border border-gray-300 px-4 py-3 rounded-sm focus:outline-none focus:border-terracotta transition-colors">
+                        <button type="submit" class="bg-darkBrown text-white px-8 py-3 rounded-sm font-medium hover:bg-opacity-90 transition-colors">Subscribe</button>
+                    </form>
+                </div>
+            </section>
+        </div>
+
+        <!-- PAGE: ROOMS -->
+        <div id="page-rooms" class="page-section fade-in min-h-screen">
+            <div class="bg-gray-50 py-12 border-b">
+                <div class="container mx-auto px-4 text-center">
+                    <h1 class="font-serif text-4xl text-darkBrown mb-4">Shop All Rooms</h1>
+                    <div class="flex flex-wrap justify-center gap-3">
+                        <button class="px-4 py-2 bg-darkBrown text-white rounded-sm text-sm">All</button>
+                        <button onclick="filterRoom('kitchen')" class="px-4 py-2 bg-white border border-gray-300 text-darkBrown hover:border-terracotta rounded-sm text-sm transition-colors">Kitchen</button>
+                        <button onclick="filterRoom('living')" class="px-4 py-2 bg-white border border-gray-300 text-darkBrown hover:border-terracotta rounded-sm text-sm transition-colors">Living</button>
+                        <button onclick="filterRoom('bedroom')" class="px-4 py-2 bg-white border border-gray-300 text-darkBrown hover:border-terracotta rounded-sm text-sm transition-colors">Bedroom</button>
+                        <button onclick="filterRoom('bath')" class="px-4 py-2 bg-white border border-gray-300 text-darkBrown hover:border-terracotta rounded-sm text-sm transition-colors">Bath</button>
+                    </div>
+                </div>
+            </div>
+            <div class="container mx-auto px-4 py-12">
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Repeated Products for Grid Demo -->
+                    <div class="bg-white p-4 rounded-sm shadow-sm hover:shadow-md transition-all">
+                        <div class="aspect-square bg-gray-100 mb-4 overflow-hidden"><img src="https://images.unsplash.com/photo-1595428774223-ef52624120d2?auto=format&fit=crop&w=600&q=80" class="w-full h-full object-cover"></div>
+                        <h3 class="font-serif text-lg text-darkBrown">Artisan Ceramic Bowl</h3>
+                        <p class="text-terracotta font-medium">$34.00</p>
+                    </div>
+                    <div class="bg-white p-4 rounded-sm shadow-sm hover:shadow-md transition-all">
+                        <div class="aspect-square bg-gray-100 mb-4 overflow-hidden"><img src="https://images.unsplash.com/photo-1616486338812-3dadae4b4f9d?auto=format&fit=crop&w=600&q=80" class="w-full h-full object-cover"></div>
+                        <h3 class="font-serif text-lg text-darkBrown">Modern Table Lamp</h3>
+                        <p class="text-terracotta font-medium">$89.00</p>
+                    </div>
+                    <div class="bg-white p-4 rounded-sm shadow-sm hover:shadow-md transition-all">
+                        <div class="aspect-square bg-gray-100 mb-4 overflow-hidden"><img src="https://images.unsplash.com/photo-1584634731339-252c581abfc5?auto=format&fit=crop&w=600&q=80" class="w-full h-full object-cover"></div>
+                        <h3 class="font-serif text-lg text-darkBrown">Linen Throw Pillow</h3>
+                        <p class="text-terracotta font-medium">$28.00</p>
+                    </div>
+                    <div class="bg-white p-4 rounded-sm shadow-sm hover:shadow-md transition-all">
+                        <div class="aspect-square bg-gray-100 mb-4 overflow-hidden"><img src="https://images.unsplash.com/photo-1590794056226-79ef3a8147e1?auto=format&fit=crop&w=600&q=80" class="w-full h-full object-cover"></div>
+                        <h3 class="font-serif text-lg text-darkBrown">Organic Cotton Towel</h3>
+                        <p class="text-terracotta font-medium">$22.00</p>
+                    </div>
+                     <div class="bg-white p-4 rounded-sm shadow-sm hover:shadow-md transition-all">
+                        <div class="aspect-square bg-gray-100 mb-4 overflow-hidden"><img src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?auto=format&fit=crop&w=600&q=80" class="w-full h-full object-cover"></div>
+                        <h3 class="font-serif text-lg text-darkBrown">Chef's Knife</h3>
+                        <p class="text-terracotta font-medium">$55.00</p>
+                    </div>
+                     <div class="bg-white p-4 rounded-sm shadow-sm hover:shadow-md transition-all">
+                        <div class="aspect-square bg-gray-100 mb-4 overflow-hidden"><img src="https://images.unsplash.com/photo-1567016432779-094069958ea5?auto=format&fit=crop&w=600&q=80" class="w-full h-full object-cover"></div>
+                        <h3 class="font-serif text-lg text-darkBrown">Minimalist Vase</h3>
+                        <p class="text-terracotta font-medium">$42.00</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PAGE: RECIPES -->
+        <div id="page-recipes" class="page-section fade-in py-12">
+            <div class="container mx-auto px-4">
+                <h1 class="font-serif text-4xl text-darkBrown mb-8 text-center">Our Recipe Journal</h1>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                     <article class="bg-white rounded-sm overflow-hidden shadow-sm">
+                        <div class="h-48 overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?auto=format&fit=crop&w=800&q=80" class="w-full h-full object-cover">
+                        </div>
+                        <div class="p-6">
+                            <h3 class="font-serif text-xl text-darkBrown">Rustic Berry Pancakes</h3>
+                            <p class="text-gray-500 text-sm mt-2">Start your morning right with these fluffy, berry-infused pancakes.</p>
+                            <button class="mt-4 text-terracotta font-medium text-sm hover:underline">Read More</button>
+                        </div>
+                    </article>
+                    <article class="bg-white rounded-sm overflow-hidden shadow-sm">
+                        <div class="h-48 overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?auto=format&fit=crop&w=800&q=80" class="w-full h-full object-cover">
+                        </div>
+                        <div class="p-6">
+                            <h3 class="font-serif text-xl text-darkBrown">Garden Fresh Salad</h3>
+                            <p class="text-gray-500 text-sm mt-2">A simple, vibrant mix of greens from the garden.</p>
+                            <button class="mt-4 text-terracotta font-medium text-sm hover:underline">Read More</button>
+                        </div>
+                    </article>
+                    <article class="bg-white rounded-sm overflow-hidden shadow-sm">
+                        <div class="h-48 overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?auto=format&fit=crop&w=800&q=80" class="w-full h-full object-cover">
+                        </div>
+                        <div class="p-6">
+                            <h3 class="font-serif text-xl text-darkBrown">Artisan Sourdough</h3>
+                            <p class="text-gray-500 text-sm mt-2">Master the art of sourdough with this step-by-step guide.</p>
+                            <button class="mt-4 text-terracotta font-medium text-sm hover:underline">Read More</button>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </div>
+
+        <!-- PAGE: CART -->
+        <div id="page-cart" class="page-section fade-in py-12">
+            <div class="container mx-auto px-4">
+                <h1 class="font-serif text-3xl text-darkBrown mb-8">Your Shopping Cart</h1>
+                <div class="flex flex-col lg:flex-row gap-12">
+                    <div class="flex-1">
+                        <div class="bg-white p-6 rounded-sm shadow-sm flex gap-4 mb-4">
+                            <img src="https://images.unsplash.com/photo-1595428774223-ef52624120d2?auto=format&fit=crop&w=200&q=80" class="w-24 h-24 object-cover rounded-sm bg-gray-100">
+                            <div class="flex-1">
+                                <div class="flex justify-between">
+                                    <h3 class="font-serif text-lg text-darkBrown">Artisan Ceramic Bowl</h3>
+                                    <p class="font-medium">$34.00</p>
+                                </div>
+                                <p class="text-sm text-gray-500 mt-1">Color: Terracotta</p>
+                                <div class="flex items-center gap-3 mt-4">
+                                    <button class="w-8 h-8 border border-gray-300 rounded-sm hover:bg-gray-100">-</button>
+                                    <span class="text-sm font-medium">1</span>
+                                    <button class="w-8 h-8 border border-gray-300 rounded-sm hover:bg-gray-100">+</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="w-full lg:w-96">
+                        <div class="bg-white p-6 rounded-sm shadow-sm h-fit">
+                            <h3 class="font-serif text-xl text-darkBrown mb-4">Order Summary</h3>
+                            <div class="flex justify-between mb-2 text-sm text-gray-600">
+                                <span>Subtotal</span>
+                                <span>$34.00</span>
+                            </div>
+                            <div class="flex justify-between mb-2 text-sm text-gray-600">
+                                <span>Shipping</span>
+                                <span>Calculated at checkout</span>
+                            </div>
+                            <div class="border-t border-gray-200 my-4"></div>
+                            <div class="flex justify-between mb-6 font-bold text-darkBrown">
+                                <span>Total</span>
+                                <span>$34.00</span>
+                            </div>
+                            <button class="w-full bg-darkBrown text-white py-3 rounded-sm font-medium hover:bg-opacity-90 transition-colors">Checkout</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PAGE: WISHLIST -->
+        <div id="page-wishlist" class="page-section fade-in py-12">
+            <div class="container mx-auto px-4">
+                <h1 class="font-serif text-3xl text-darkBrown mb-8">Your Wishlist</h1>
+                <div class="bg-white p-8 text-center rounded-sm shadow-sm">
+                    <p class="text-gray-500 mb-4">Your wishlist is currently empty.</p>
+                    <button onclick="switchPage('home')" class="text-terracotta font-medium hover:underline">Continue Shopping</button>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-darkBrown text-warmWhite pt-16 pb-8">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+                <div class="col-span-1 md:col-span-1">
+                    <div class="flex items-center gap-2 mb-4">
+                        <i class="fa-solid fa-leaf text-2xl text-softGreen"></i>
+                        <span class="font-serif text-2xl font-bold">iShiva</span>
+                    </div>
+                    <p class="text-gray-400 text-sm leading-relaxed">
+                        Digital technology meets artisanal home design. We bring warmth and functionality to your living spaces.
+                    </p>
+                </div>
+                <div>
+                    <h4 class="font-serif text-lg mb-4">Shop</h4>
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li><a href="#" onclick="switchPage('rooms')" class="hover:text-terracotta transition-colors">New Arrivals</a></li>
+                        <li><a href="#" onclick="switchPage('rooms')" class="hover:text-terracotta transition-colors">Kitchen</a></li>
+                        <li><a href="#" onclick="switchPage('rooms')" class="hover:text-terracotta transition-colors">Living Room</a></li>
+                        <li><a href="#" onclick="switchPage('rooms')" class="hover:text-terracotta transition-colors">Bedroom</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-serif text-lg mb-4">Company</h4>
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li><a href="#" class="hover:text-terracotta transition-colors">About Us</a></li>
+                        <li><a href="#" class="hover:text-terracotta transition-colors">Careers</a></li>
+                        <li><a href="#" class="hover:text-terracotta transition-colors">Privacy Policy</a></li>
+                        <li><a href="#" class="hover:text-terracotta transition-colors">Terms of Service</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-serif text-lg mb-4">Connect</h4>
+                    <div class="flex space-x-4">
+                        <a href="#" class="w-10 h-10 rounded-full border border-gray-600 flex items-center justify-center hover:bg-terracotta hover:border-terracotta transition-all"><i class="fa-brands fa-instagram"></i></a>
+                        <a href="#" class="w-10 h-10 rounded-full border border-gray-600 flex items-center justify-center hover:bg-terracotta hover:border-terracotta transition-all"><i class="fa-brands fa-facebook-f"></i></a>
+                        <a href="#" class="w-10 h-10 rounded-full border border-gray-600 flex items-center justify-center hover:bg-terracotta hover:border-terracotta transition-all"><i class="fa-brands fa-pinterest-p"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 pt-8 flex flex-col md:flex-row justify-between items-center text-xs text-gray-500">
+                <p>&copy; 2024 iShiva Digital Technology. All rights reserved.</p>
+                <p class="mt-2 md:mt-0">Frontend Design Demo</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Interactive Scripts -->
+    <script>
+        // Simple SPA Router
+        function switchPage(pageId) {
+            // Hide all pages
+            document.querySelectorAll('.page-section').forEach(el => {
+                el.classList.remove('active-page');
+            });
+            
+            // Remove active class from nav links
+            document.querySelectorAll('.nav-link').forEach(el => {
+                el.classList.remove('active', 'border-b-2', 'border-terracotta');
+            });
+
+            // Show target page
+            const target = document.getElementById('page-' + pageId);
+            if (target) {
+                target.classList.add('active-page');
+                window.scrollTo(0, 0);
+            }
+
+            // Highlight nav (simplified logic)
+            if (pageId === 'home') {
+                document.querySelector('button[onclick="switchPage(\'home\')"]').classList.add('active');
+            } else if (pageId === 'rooms') {
+                document.querySelector('button[onclick="switchPage(\'rooms\')"]').classList.add('active');
+            } else if (pageId === 'recipes') {
+                document.querySelector('button[onclick="switchPage(\'recipes\')"]').classList.add('active');
+            }
+        }
+
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        }
+
+        function addToCart() {
+            const countEl = document.getElementById('cart-count');
+            let count = parseInt(countEl.innerText);
+            count++;
+            countEl.innerText = count;
+            
+            // Visual feedback
+            countEl.parentElement.classList.add('scale-125', 'text-terracotta');
+            setTimeout(() => {
+                countEl.parentElement.classList.remove('scale-125', 'text-terracotta');
+            }, 200);
+        }
+
+        function filterRoom(room) {
+            switchPage('rooms');
+            // In a real app, this would filter the grid. 
+            // For this demo, we'll just alert the intended action.
+            console.log("Filtering by room:", room);
+        }
+
+        function changeProductColor(input, colorCode, imgSrc) {
+            // Update image
+            const img = document.getElementById('detail-img');
+            img.style.opacity = '0';
+            setTimeout(() => {
+                img.src = imgSrc;
+                img.style.opacity = '1';
+            }, 200);
+        }
+    </script>
+</body>
+</html>

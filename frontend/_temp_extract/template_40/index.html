@@ -1,0 +1,895 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>iShiva Digital Technology — Ultra-Luxury Jewelry</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Montserrat:wght@300;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    :root{
+      --bg:#0A0A0A;
+      --bg-soft:#0f0f0f;
+      --gold:#C9A84C;
+      --gold-70:rgba(201,168,76,.7);
+      --gold-30:rgba(201,168,76,.3);
+      --muted:#B8B8B8;
+      --text:#EDEDED;
+      --shadow: 0 10px 40px rgba(0,0,0,.45);
+      --radius:16px;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      background:var(--bg);
+      color:var(--text);
+      font-family:"Montserrat",system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+      font-weight:300;
+      overflow-x:hidden;
+      cursor:none;
+    }
+    a{color:inherit;text-decoration:none}
+    img,video{max-width:100%;display:block}
+    h1,h2,h3,h4{
+      font-family:"Cormorant Garamond", Georgia, 'Times New Roman', serif;
+      margin:0 0 10px 0;
+      line-height:1.1;
+      color:#fff;
+    }
+    p{color:#d8d8d8; line-height:1.7}
+    button{font-family:inherit}
+    .container{max-width:1200px;margin:0 auto;padding:0 24px}
+    .gold{
+      color:var(--gold)
+    }
+    .btn{
+      appearance:none;border:0;outline:0;cursor:pointer;
+      padding:14px 22px;border-radius:999px;
+      color:#0A0A0A;background:linear-gradient(135deg,#e9d07a 0%, var(--gold) 50%, #a08331 100%);
+      box-shadow:0 8px 30px rgba(201,168,76,.35), inset 0 1px 0 rgba(255,255,255,.25);
+      font-weight:600;letter-spacing:.4px;transition:transform .25s ease, box-shadow .25s ease, filter .25s ease;
+    }
+    .btn:hover{transform:translateY(-1px); filter:saturate(1.1); box-shadow:0 12px 40px rgba(201,168,76,.5)}
+    .btn-outline{
+      background:transparent;border:1px solid var(--gold);color:var(--gold)
+    }
+    .chip{
+      padding:10px 14px;border-radius:999px;border:1px solid rgba(255,255,255,.08);
+      background:#0d0d0d;color:#e5e5e5;cursor:pointer;transition:all .2s ease;user-select:none;
+    }
+    .chip:hover{border-color:var(--gold-70); color:#fff}
+    .chip.active{border-color:var(--gold); background:rgba(201,168,76,.12); color:#fff; box-shadow:inset 0 0 0 1px rgba(201,168,76,.15)}
+    .nav{
+      position:sticky;top:0;z-index:50;background:rgba(10,10,10,.7);backdrop-filter: blur(10px);
+      border-bottom:1px solid rgba(201,168,76,.18);
+    }
+    .nav-inner{
+      display:flex;align-items:center;justify-content:space-between;padding:16px 24px; gap:18px
+    }
+    .brand{
+      display:flex;align-items:center;gap:12px;font-weight:600; letter-spacing:.6px
+    }
+    .brand-mark{
+      width:32px;height:32px;border-radius:50%;
+      background:radial-gradient(60% 60% at 40% 35%, #fff 0%, #f6e7a3 12%, var(--gold) 42%, #94792f 100%);
+      box-shadow:0 0 24px rgba(201,168,76,.35), inset 0 0 10px rgba(255,255,255,.3);
+    }
+    .nav a{opacity:.9; transition:opacity .2s ease, color .2s ease}
+    .nav a:hover{opacity:1; color:var(--gold)}
+    .nav-links{display:flex;gap:22px;align-items:center}
+    .cart-indicator{
+      display:inline-flex;align-items:center;gap:10px;padding:8px 12px;border:1px solid rgba(201,168,76,.2);border-radius:999px;
+      background:rgba(201,168,76,.06)
+    }
+    .badge{
+      display:inline-flex; align-items:center; justify-content:center; min-width:20px; height:20px; padding:0 6px;
+      font-size:12px;border-radius:999px;background:var(--gold); color:#0a0a0a; font-weight:700
+    }
+    /* Hero */
+    .hero{
+      position:relative; min-height:100vh; display:grid; place-items:center; overflow:hidden;
+      border-bottom:1px solid rgba(201,168,76,.15)
+    }
+    .hero .overlay-gradient{
+      position:absolute; inset:0; background:
+        radial-gradient(60% 70% at 20% 20%, rgba(201,168,76,.18), transparent 50%),
+        radial-gradient(50% 60% at 80% 70%, rgba(201,168,76,.12), transparent 50%),
+        linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(10,10,10,.6) 65%, rgba(10,10,10,.95) 100%);
+      pointer-events:none;
+    }
+    #goldCanvas{position:absolute; inset:0; width:100%; height:100%}
+    .hero-content{
+      position:relative; z-index:2; text-align:center; padding:40px 20px; max-width:900px
+    }
+    .hero h1{
+      font-size:clamp(42px,7vw,92px);
+      letter-spacing:.5px;
+      text-shadow:0 10px 40px rgba(0,0,0,.6);
+    }
+    .subtitle{
+      font-size:clamp(16px,2.2vw,20px); max-width:760px; margin:12px auto 28px auto; color:#dcdcdc
+    }
+    .hero-ctas{display:flex; gap:12px; justify-content:center; flex-wrap:wrap}
+    /* Horizontal Featured Scroller */
+    .featured-wrap{
+      position:relative; overflow:hidden; border-top:1px solid rgba(201,168,76,.1); border-bottom:1px solid rgba(201,168,76,.1);
+      background:linear-gradient(180deg, rgba(255,255,255,.02), rgba(201,168,76,.03), rgba(255,255,255,.02));
+    }
+    .scroller{
+      display:flex; gap:28px; padding:18px 0; align-items:center; will-change:transform;
+      animation:scrollX 40s linear infinite;
+    }
+    @keyframes scrollX{
+      0%{transform:translateX(0)}
+      100%{transform:translateX(-50%)}
+    }
+    .featured-item{
+      position:relative; flex:0 0 auto; width:200px; height:120px; border-radius:14px; overflow:hidden; background:#111; border:1px solid rgba(255,255,255,.06);
+      box-shadow: var(--shadow);
+      transform:translateZ(0);
+    }
+    .featured-item img{width:100%; height:100%; object-fit:cover; filter:saturate(.9) contrast(1.05)}
+    .hover-gold{
+      position:absolute; inset:0; background:rgba(201,168,76,.92);
+      color:#0A0A0A; display:grid; place-items:center; opacity:0; transition:opacity .25s ease;
+      font-weight:600; letter-spacing:.6px; text-transform:uppercase; font-size:14px
+    }
+    .featured-item:hover .hover-gold, .card:hover .hover-gold{opacity:1}
+    /* Masonry Grid */
+    .section{padding:70px 0}
+    .section-title{margin-bottom:22px; font-weight:600; font-size:36px}
+    .masonry{
+      column-gap:22px;
+    }
+    @media(min-width:640px){ .masonry{ column-count:2 } }
+    @media(min-width:1024px){ .masonry{ column-count:3 } }
+    .card{
+      position:relative; break-inside:avoid; margin:0 0 22px 0; border-radius:18px; overflow:hidden; border:1px solid rgba(255,255,255,.08);
+      background:linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,.0));
+      box-shadow: var(--shadow);
+      transition:transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+      will-change:transform
+    }
+    .card:hover{ transform:translateY(-4px); box-shadow:0 18px 60px rgba(0,0,0,.55); border-color:rgba(201,168,76,.2)}
+    .card img{width:100%; height:auto; display:block; object-fit:cover}
+    .card-info{padding:14px 14px 16px 14px; display:flex; justify-content:space-between; align-items:center; gap:10px}
+    .price{color:var(--gold); font-weight:600; letter-spacing:.4px}
+    /* Product Page */
+    .product-wrap{display:grid; gap:30px}
+    @media(min-width:960px){ .product-wrap{ grid-template-columns: 1.2fr 1fr } }
+    .viewer{
+      position:relative; aspect-ratio: 1 / 1; border-radius:18px; overflow:hidden; background: radial-gradient(50% 50% at 50% 50%, #111 0%, #0a0a0a 40%, #000 100%);
+      border:1px solid rgba(255,255,255,.08); box-shadow:var(--shadow); perspective:1200px; cursor:grab;
+    }
+    .viewer:active{cursor:grabbing}
+    .viewer-object{
+      position:absolute; inset:0; margin:auto; width:70%; height:70%; transform-style:preserve-3d;
+      background:radial-gradient(60% 60% at 45% 30%, #f9eaa4 0%, #e6cf77 20%, var(--gold) 60%, #8b7131 100%);
+      border-radius:50%;
+      box-shadow: inset -30px -30px 80px rgba(0,0,0,.35), inset 12px 12px 30px rgba(255,255,255,.2), 0 25px 80px rgba(201,168,76,.15);
+      transform:rotateY(0deg) rotateX(10deg);
+      transition:filter .2s ease
+    }
+    .viewer:active .viewer-object{filter:saturate(1.05)}
+    .viewer-hint{
+      position:absolute; bottom:16px; left:16px; padding:8px 12px; border-radius:999px; border:1px solid rgba(201,168,76,.35);
+      color:var(--gold); background:rgba(201,168,76,.08); font-size:12px; letter-spacing:.4px; backdrop-filter:blur(6px)
+    }
+    .options{display:flex; flex-direction:column; gap:18px}
+    .opt-group h4{font-size:18px; color:#fff; margin-bottom:10px}
+    .chips{display:flex; gap:10px; flex-wrap:wrap}
+    .qty{display:inline-flex; align-items:center; gap:10px; border:1px solid rgba(255,255,255,.1); border-radius:999px; padding:6px 10px}
+    .qty button{
+      width:28px; height:28px; border-radius:50%; background:rgba(201,168,76,.15); border:1px solid rgba(201,168,76,.25);
+      color:#fff; display:grid; place-items:center; font-weight:700
+    }
+    .desc{
+      margin-top:10px; color:#cfcfcf; font-size:15px
+    }
+    .sticky-bar{
+      position:fixed; left:0; right:0; bottom:16px; z-index:40; display:none;
+      justify-content:center; pointer-events:none;
+    }
+    .sticky-inner{
+      pointer-events:auto; display:flex; align-items:center; justify-content:space-between; gap:16px;
+      padding:12px 16px; border-radius:999px; background:rgba(10,10,10,.8);
+      border:1px solid rgba(201,168,76,.25); backdrop-filter: blur(10px); max-width:960px; width:calc(100% - 24px); margin:0 auto;
+      box-shadow:0 8px 30px rgba(201,168,76,.25)
+    }
+    .sticky-inner .btn{padding:12px 18px}
+    /* Video section */
+    .story{
+      position:relative; border-radius:18px; overflow:hidden; border:1px solid rgba(255,255,255,.08);
+      box-shadow: var(--shadow)
+    }
+    .story .overlay{
+      position:absolute; inset:0; background:linear-gradient(180deg, rgba(10,10,10,.0), rgba(10,10,10,.65) 60%, rgba(10,10,10,.92) 100%);
+    }
+    .story-caption{
+      position:absolute; bottom:16px; left:16px; right:16px; color:#fff
+    }
+    /* Newsletter */
+    .newsletter{
+      position:relative; border-radius:18px; overflow:hidden; border:1px solid rgba(255,255,255,.08);
+      background:url('https://images.unsplash.com/photo-1516637090014-cb1ab0d08fc7?q=80&w=1974&auto=format&fit=crop') center/cover no-repeat;
+      min-height:280px;
+    }
+    .newsletter .veil{
+      position:absolute; inset:0; background:rgba(10,10,10,.6); backdrop-filter: blur(2px)
+    }
+    .newsletter .content{
+      position:relative; z-index:2; padding:40px 24px; display:flex; gap:16px; align-items:center; justify-content:space-between; flex-wrap:wrap
+    }
+    .newsletter input{
+      background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.15); border-radius:999px; padding:14px 16px; color:#fff; min-width:260px;
+      outline:none; transition:border-color .2s ease
+    }
+    .newsletter input:focus{border-color:var(--gold)}
+    /* Footer */
+    footer{
+      padding:36px 0; border-top:1px solid rgba(201,168,76,.18); background:#080808; color:#bdbdbd
+    }
+    .social{display:flex; gap:14px}
+    .social a{width:36px;height:36px;border-radius:50%;border:1px solid rgba(201,168,76,.25); display:grid; place-items:center; color:var(--gold); background:rgba(201,168,76,.06)}
+    /* Pages / Router */
+    .page{display:none; animation:fade .35s ease}
+    .page.active{display:block}
+    @keyframes fade{from{opacity:0; transform:translateY(6px)} to{opacity:1; transform:translateY(0)}}
+    /* Cart */
+    .cart-item{
+      display:grid; grid-template-columns:80px 1fr auto; gap:16px; align-items:center; padding:12px 0; border-bottom:1px solid rgba(255,255,255,.06)
+    }
+    .cart-summary{
+      margin-top:18px; display:flex; align-items:center; justify-content:space-between
+    }
+    /* Custom cursor */
+    .cursor-dot{
+      position:fixed; width:10px; height:10px; border-radius:50%; background:radial-gradient(60% 60% at 40% 35%, #fff 0%, #f6e7a3 10%, var(--gold) 60%, #7f662a 100%);
+      box-shadow:0 0 20px rgba(201,168,76,.6), 0 0 2px rgba(201,168,76,.9) inset;
+      transform:translate(-50%,-50%); pointer-events:none; z-index:1000; transition:transform .06s linear, width .15s ease, height .15s ease, opacity .2s ease, filter .2s ease;
+      mix-blend-mode:screen
+    }
+    .cursor-dot.hover{width:18px; height:18px; filter:saturate(1.2)}
+    @media(max-width:768px){
+      body{cursor:auto}
+      .cursor-dot{display:none}
+      .hero-ctas .btn{width:100%}
+    }
+  </style>
+</head>
+<body>
+  <div id="cursor" class="cursor-dot" aria-hidden="true"></div>
+
+  <header class="nav">
+    <div class="container nav-inner">
+      <a href="#home" class="brand" data-link>
+        <span class="brand-mark" aria-hidden="true"></span>
+        <span>iShiva Atelier</span>
+      </a>
+      <nav class="nav-links">
+        <a href="#home" data-link>Home</a>
+        <a href="#shop" data-link>Shop</a>
+        <a href="#about" data-link>About</a>
+        <a href="#cart" data-link class="cart-indicator" aria-label="Cart">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M7 4h-2l-1 2v2h2l3.6 7.59-1.35 2.41A1 1 0 0 0 9.8 20h9.4a1 1 0 0 0 .9-1.45L18 12H9.42" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span>Cart</span>
+          <span id="cartCount" class="badge">0</span>
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <!-- HOME -->
+    <section id="home" class="page active" data-route="home">
+      <section class="hero" aria-label="Hero">
+        <canvas id="goldCanvas"></canvas>
+        <div class="overlay-gradient"></div>
+        <div class="hero-content container">
+          <h1>Fine Jewelry in Obsidian & Gold</h1>
+          <p class="subtitle">Sculpted in 22K brilliance, designed for a life well lived. Discover iconic pieces that transcend season and trend — crafted with intent by iShiva Digital Technology.</p>
+          <div class="hero-ctas">
+            <a href="#shop" class="btn" data-link>Shop the Collection</a>
+            <a href="#about" class="btn btn-outline" data-link>About the House</a>
+          </div>
+        </div>
+      </section>
+
+      <section class="featured-wrap" aria-label="Featured marquee">
+        <div class="container" style="overflow:hidden">
+          <div id="featuredScroller" class="scroller"></div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="container">
+          <h2 class="section-title">Editor's Cut</h2>
+          <div id="editorialMasonry" class="masonry"></div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="container">
+          <div class="story">
+            <video src="https://cdn.coverr.co/videos/coverr-close-up-of-a-jewel-7302/1080p.mp4" autoplay muted loop playsinline poster="https://images.unsplash.com/photo-1516637090014-cb1ab0d08fc7?q=80&w=1974&auto=format&fit=crop"></video>
+            <div class="overlay"></div>
+            <div class="story-caption">
+              <h3 class="gold" style="font-size:28px">A Story in Every Facet</h3>
+              <p>“The moment I clasped the Vajra cuff, I felt its weight — not just of gold, but of heritage.” — Mira K.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="container">
+          <div class="newsletter">
+            <div class="veil"></div>
+            <div class="content">
+              <div>
+                <h3 style="margin:0 0 6px 0">Become an Insider</h3>
+                <p style="margin:0; color:#e8e8e8">Early access to limited drops, private previews, and atelier notes.</p>
+              </div>
+              <div style="display:flex; gap:10px; flex-wrap:wrap">
+                <input type="email" id="newsletterEmail" placeholder="Your email address" aria-label="Email"/>
+                <button class="btn" id="newsletterBtn">Join</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </section>
+
+    <!-- SHOP -->
+    <section id="shop" class="page" data-route="shop">
+      <section class="section">
+        <div class="container">
+          <h2 class="section-title">Shop All</h2>
+          <div id="shopGrid" class="masonry"></div>
+        </div>
+      </section>
+    </section>
+
+    <!-- PRODUCT DETAIL -->
+    <section id="product" class="page" data-route="product">
+      <section class="section">
+        <div class="container">
+          <div id="productBreadcrumb" style="margin-bottom:10px; color:#a8a8a8"><a href="#home" data-link>Home</a> / <a href="#shop" data-link>Shop</a> / <span id="crumbName">Product</span></div>
+          <div class="product-wrap">
+            <div class="viewer" id="viewer">
+              <div class="viewer-object" id="viewerObject" aria-label="360° product placeholder"></div>
+              <div class="viewer-hint">Drag to rotate 360°</div>
+            </div>
+            <div>
+              <h2 id="productTitle" style="font-size:42px"></h2>
+              <div style="display:flex; align-items:center; gap:14px; margin:6px 0 14px 0">
+                <div class="price" id="productPrice"></div>
+                <div style="height:16px; width:1px; background:rgba(255,255,255,.12)"></div>
+                <div style="color:#bfbfbf">22K Signature Collection</div>
+              </div>
+
+              <div class="options">
+                <div class="opt-group">
+                  <h4>Size</h4>
+                  <div id="sizeChips" class="chips"></div>
+                </div>
+                <div class="opt-group">
+                  <h4>Material</h4>
+                  <div id="materialChips" class="chips"></div>
+                </div>
+                <div class="opt-group">
+                  <h4>Quantity</h4>
+                  <div class="qty">
+                    <button id="qtyMinus" aria-label="Decrease">−</button>
+                    <span id="qtyVal">1</span>
+                    <button id="qtyPlus" aria-label="Increase">+</button>
+                  </div>
+                </div>
+                <div class="opt-group">
+                  <button id="addToCartMain" class="btn">Add to Cart</button>
+                </div>
+                <div class="desc" id="productDesc"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <!-- Sticky Add To Cart -->
+      <div id="stickyBar" class="sticky-bar" aria-hidden="true">
+        <div class="sticky-inner container">
+          <div style="display:flex; gap:12px; align-items:center; overflow:auto">
+            <strong id="stickyName" style="font-family:'Cormorant Garamond'; font-size:18px"></strong>
+            <span style="opacity:.6">|</span>
+            <span id="stickyOptions" style="color:#d6d6d6"></span>
+          </div>
+          <div style="display:flex; align-items:center; gap:12px">
+            <div class="price" id="stickyPrice"></div>
+            <button id="stickyAdd" class="btn">Add to Cart</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="about" class="page" data-route="about">
+      <section class="section">
+        <div class="container">
+          <h2 class="section-title">About the Maison</h2>
+          <div style="display:grid; gap:24px; grid-template-columns:1fr; align-items:start">
+            <div style="display:grid; gap:18px">
+              <p>iShiva Digital Technology crafts heirloom jewelry at the nexus of computation and craft. Drawing from sacred geometry and contemporary materials science, each piece is precision engineered, hand-finished, and ethically sourced.</p>
+              <p>Our atelier in obsidian black and 22K gold is both lab and sanctuary — a place where algorithms meet artisanship. We produce in limited quantities to honor material, maker, and wearer.</p>
+            </div>
+            <div class="newsletter">
+              <div class="veil"></div>
+              <div class="content">
+                <div>
+                  <h3 style="margin:0 0 6px 0">Private Salon Appointments</h3>
+                  <p style="margin:0; color:#e8e8e8">Request a private viewing with our master jeweler.</p>
+                </div>
+                <div style="display:flex; gap:10px; flex-wrap:wrap">
+                  <input type="text" placeholder="Your name" aria-label="Your name"/>
+                  <input type="email" placeholder="Email" aria-label="Your email"/>
+                  <button class="btn">Request</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </section>
+
+    <!-- CART -->
+    <section id="cart" class="page" data-route="cart">
+      <section class="section">
+        <div class="container">
+          <h2 class="section-title">Your Cart</h2>
+          <div id="cartItems"></div>
+          <div class="cart-summary">
+            <div>
+              <div>Subtotal</div>
+              <div class="price" id="cartSubtotal">$0</div>
+            </div>
+            <div style="display:flex; gap:10px">
+              <a href="#shop" data-link class="btn btn-outline">Continue Shopping</a>
+              <button class="btn" id="checkoutBtn">Checkout</button>
+            </div>
+          </div>
+        </div>
+      </section>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container" style="display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap">
+      <div>© <span class="gold">iShiva Digital Technology</span> — Ultra‑Luxury E‑Commerce Frontend</div>
+      <div class="social">
+        <a href="#" aria-label="Instagram">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="18" rx="5" stroke="currentColor" stroke-width="1.2"/><circle cx="12" cy="12" r="3.5" stroke="currentColor" stroke-width="1.2"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg>
+        </a>
+        <a href="#" aria-label="Twitter">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M22 5.8c-.7.3-1.4.5-2.1.6.8-.5 1.3-1.2 1.6-2.1-.7.4-1.5.7-2.3.9A3.6 3.6 0 0 0 12 7.8c0 .3 0 .6.1.9A10.3 10.3 0 0 1 3 5.1a3.6 3.6 0 0 0 1.1 4.8c-.6 0-1.2-.2-1.7-.5v.1a3.6 3.6 0 0 0 2.9 3.5c-.5.2-1 .2-1.5.1.4 1.3 1.7 2.3 3.2 2.3A7.3 7.3 0 0 1 2 18.3c1.5.9 3.3 1.4 5.2 1.4 6.2 0 9.6-5.2 9.6-9.7v-.4c.7-.4 1.3-1 1.8-1.7z" fill="currentColor"/></svg>
+        </a>
+        <a href="#" aria-label="Pinterest">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 3C7 3 3.5 6.7 3.5 11.3c0 3.4 2 6.3 5 7.3-.1-.6-.2-1.6 0-2.2.2-.6 1.5-5 1.5-5s-.4-.8-.4-2c0-1.9 1.1-3.2 2.5-3.2 1.2 0 1.8.9 1.8 2 0 1.2-.8 3-1.2 4.7-.3 1.4.8 2.5 2.1 2.5 2.6 0 4.6-2.7 4.6-6.5 0-3.4-2.4-5.9-6-5.9-4.1 0-6.6 3.1-6.6 6.2 0 1.2.5 2.6 1.1 3.3.1.1.1.2.1.3-.1.3-.3 1-.3 1.1-.1.1-.2.1-.4 0-1.5-.7-2.5-3-2.5-4.9 0-4 2.9-7.7 8.5-7.7 4.5 0 8.1 3.2 8.1 7.5 0 4.5-2.9 8.1-7 8.1-1.4 0-2.7-.7-3.1-1.6l-.9 3.3c-.3 1.1-1 2.4-1.5 3.2 1.1.3 2.2.5 3.4.5 7 0 11.5-4.9 11.5-11S19 3 12 3z" fill="currentColor"/></svg>
+        </a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Product data
+    const PRODUCTS = [
+      {
+        id:'suryastra-necklace',
+        name:'Suryastra Necklace',
+        price:5890,
+        image:'https://images.unsplash.com/photo-1511285560929-80b456fea0bc?q=80&w=1640&auto=format&fit=crop',
+        imageTall:'https://images.unsplash.com/photo-1610149031343-5d4b53a6db62?q=80&w=1640&auto=format&fit=crop',
+        desc:'A radiant torque capturing the first light — sculpted in 22K with mirror polish and satin inner curve.'
+      },
+      {
+        id:'trinetra-ring',
+        name:'Trinetra Ring',
+        price:1990,
+        image:'https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?q=80&w=1640&auto=format&fit=crop',
+        imageTall:'https://images.unsplash.com/photo-1585386959984-a4155223165c?q=80&w=1640&auto=format&fit=crop',
+        desc:'Architectural signet with triple bevel motif. Comfort-fit interior and knife-edge profile.'
+      },
+      {
+        id:'vajra-cuff',
+        name:'Vajra Cuff',
+        price:3290,
+        image:'https://images.unsplash.com/photo-1551632811-561732d1e306?q=80&w=1640&auto=format&fit=crop',
+        imageTall:'https://images.unsplash.com/photo-1577412647305-991150c7d163?q=80&w=1640&auto=format&fit=crop',
+        desc:'Solid 22K cuff with tensioned spine. Brushed exterior, luminous inner glow.'
+      },
+      {
+        id:'amrita-earrings',
+        name:'Amrita Earrings',
+        price:2490,
+        image:'https://images.unsplash.com/photo-1587466911165-cf4cfb11b36a?q=80&w=1640&auto=format&fit=crop',
+        imageTall:'https://images.unsplash.com/photo-1583275474547-1d4a68249f75?q=80&w=1640&auto=format&fit=crop',
+        desc:'Suspended drops with fluid curvature — light as a whisper, bold as a statement.'
+      },
+      {
+        id:'rudra-pendant',
+        name:'Rudra Pendant',
+        price:1790,
+        image:'https://images.unsplash.com/photo-1526178613657-cadf0d82a2f8?q=80&w=1640&auto=format&fit=crop',
+        imageTall:'https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?q=80&w=1640&auto=format&fit=crop',
+        desc:'Glyph pendant engraved with protective mantras — finished with micro-sandblast halo.'
+      },
+      {
+        id:'padma-bracelet',
+        name:'Padma Bracelet',
+        price:2990,
+        image:'https://images.unsplash.com/photo-1520975682031-ae3ee3e7b1c5?q=80&w=1640&auto=format&fit=crop',
+        imageTall:'https://images.unsplash.com/photo-1581783898377-3225fc8ba2b4?q=80&w=1640&auto=format&fit=crop',
+        desc:'Interlocking lotus links articulate smoothly around the wrist — a study in kinetic grace.'
+      },
+      {
+        id:'kundala-hoops',
+        name:'Kundala Hoops',
+        price:2190,
+        image:'https://images.unsplash.com/photo-1585386959984-a4155223165c?q=80&w=1640&auto=format&fit=crop',
+        imageTall:'https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?q=80&w=1640&auto=format&fit=crop',
+        desc:'Timeless rounded hoops with hidden latch. Featherlight comfort, enduring form.'
+      },
+      {
+        id:'chandra-anklet',
+        name:'Chandra Anklet',
+        price:1590,
+        image:'https://images.unsplash.com/photo-1522312346375-d1a52e2b99b3?q=80&w=1640&auto=format&fit=crop',
+        imageTall:'https://images.unsplash.com/photo-1543294001-f7cd5d7fb516?q=80&w=1640&auto=format&fit=crop',
+        desc:'Lunar chain with micro-charms. A delicate shimmer with every step.'
+      }
+    ];
+
+    // State
+    const state = {
+      currentProduct: null,
+      cart: JSON.parse(localStorage.getItem('ishiva_cart') || '[]'),
+      selectedSize: null,
+      selectedMaterial: '22K Gold',
+      qty: 1
+    };
+
+    // Utilities
+    const fmt = v => `$${v.toLocaleString()}`;
+    const saveCart = () => {
+      localStorage.setItem('ishiva_cart', JSON.stringify(state.cart));
+      updateCartCount();
+    };
+    const updateCartCount = () => {
+      const c = document.getElementById('cartCount');
+      c.textContent = state.cart.reduce((a,i)=>a+i.qty,0);
+    };
+
+    // Build Featured scroller
+    const buildFeatured = () => {
+      const scroller = document.getElementById('featuredScroller');
+      const items = [...PRODUCTS, ...PRODUCTS]; // duplicate for loop
+      scroller.innerHTML = items.map(p => `
+        <a class="featured-item" href="#product?id=${p.id}" data-id="${p.id}">
+          <img src="${p.image}" alt="${p.name} featured"/>
+          <div class="hover-gold">${p.name}</div>
+        </a>
+      `).join('');
+    };
+
+    // Build Masonry cards
+    const productCard = (p, tall=false) => `
+      <a class="card" href="#product?id=${p.id}" data-id="${p.id}">
+        <img src="${tall ? p.imageTall : p.image}" alt="${p.name}"/>
+        <div class="hover-gold">${p.name}</div>
+        <div class="card-info">
+          <div style="font-family:'Cormorant Garamond'; font-size:20px">${p.name}</div>
+          <div class="price">${fmt(p.price)}</div>
+        </div>
+      </a>
+    `;
+    const buildEditorial = () => {
+      const ed = document.getElementById('editorialMasonry');
+      // Mix of tall and normal
+      const content = PRODUCTS.map((p,i)=>productCard(p, i%3===0)).join('');
+      ed.innerHTML = content;
+    };
+    const buildShop = () => {
+      const shop = document.getElementById('shopGrid');
+      const content = PRODUCTS.map((p,i)=>productCard(p, i%4===0)).join('');
+      shop.innerHTML = content;
+    };
+
+    // Router
+    function getHashRoute(){
+      const [routePart, queryString] = location.hash.replace('#','').split('?');
+      const route = routePart || 'home';
+      const params = new URLSearchParams(queryString || '');
+      return {route, params};
+    }
+    function renderRoute(){
+      const {route, params} = getHashRoute();
+      document.querySelectorAll('.page').forEach(s=>s.classList.remove('active'));
+      const page = document.querySelector(`.page[data-route="${route}"]`);
+      if(page){ page.classList.add('active'); }
+      window.scrollTo({top:0, behavior:'smooth'});
+
+      // Sticky bar visibility on product page
+      document.getElementById('stickyBar').style.display = (route === 'product') ? 'flex' : 'none';
+
+      if(route === 'product'){
+        const id = params.get('id') || PRODUCTS[0].id;
+        const p = PRODUCTS.find(x=>x.id===id) || PRODUCTS[0];
+        state.currentProduct = p;
+        state.selectedSize = null;
+        state.selectedMaterial = '22K Gold';
+        state.qty = 1;
+        hydrateProduct(p);
+      }
+      if(route === 'cart'){
+        renderCart();
+      }
+    }
+    window.addEventListener('hashchange', renderRoute);
+
+    // Product Hydration
+    function hydrateProduct(p){
+      document.getElementById('crumbName').textContent = p.name;
+      document.getElementById('productTitle').textContent = p.name;
+      document.getElementById('productPrice').textContent = fmt(p.price);
+      document.getElementById('productDesc').textContent = p.desc;
+      document.getElementById('stickyName').textContent = p.name;
+      document.getElementById('stickyPrice').textContent = fmt(p.price);
+      updateStickyOptions();
+
+      const sizes = ['5','6','7','8','9'];
+      const materials = ['22K Gold','Platinum','Rose Gold'];
+
+      const sizeWrap = document.getElementById('sizeChips');
+      sizeWrap.innerHTML = sizes.map(s=>`<span class="chip" data-size="${s}">${s}</span>`).join('');
+      sizeWrap.querySelectorAll('.chip').forEach(c=>{
+        c.addEventListener('click', ()=>{
+          sizeWrap.querySelectorAll('.chip').forEach(x=>x.classList.remove('active'));
+          c.classList.add('active');
+          state.selectedSize = c.dataset.size;
+          updateStickyOptions();
+        });
+      });
+
+      const matWrap = document.getElementById('materialChips');
+      matWrap.innerHTML = materials.map(m=>`<span class="chip ${m===state.selectedMaterial?'active':''}" data-material="${m}">${m}</span>`).join('');
+      matWrap.querySelectorAll('.chip').forEach(c=>{
+        c.addEventListener('click', ()=>{
+          matWrap.querySelectorAll('.chip').forEach(x=>x.classList.remove('active'));
+          c.classList.add('active');
+          state.selectedMaterial = c.dataset.material;
+          updateStickyOptions();
+        });
+      });
+
+      document.getElementById('qtyVal').textContent = state.qty;
+      document.getElementById('qtyMinus').onclick = ()=>{
+        state.qty = Math.max(1, state.qty-1);
+        document.getElementById('qtyVal').textContent = state.qty;
+      };
+      document.getElementById('qtyPlus').onclick = ()=>{
+        state.qty += 1;
+        document.getElementById('qtyVal').textContent = state.qty;
+      };
+
+      document.getElementById('addToCartMain').onclick = addCurrentToCart;
+      document.getElementById('stickyAdd').onclick = addCurrentToCart;
+    }
+
+    function updateStickyOptions(){
+      const s = state.selectedSize ? `Size ${state.selectedSize}` : 'Select size';
+      const m = state.selectedMaterial;
+      const text = `${m} • ${s} • Qty ${state.qty || 1}`;
+      document.getElementById('stickyOptions').textContent = text;
+    }
+
+    function addCurrentToCart(){
+      const p = state.currentProduct;
+      if(!p) return;
+      if(!state.selectedSize){
+        alert('Please select a size.');
+        return;
+      }
+      const key = `${p.id}-${state.selectedMaterial}-${state.selectedSize}`;
+      const existing = state.cart.find(i=>i.key===key);
+      if(existing){ existing.qty += state.qty; }
+      else{
+        state.cart.push({
+          key, id:p.id, name:p.name, price:p.price, image:p.image, size:state.selectedSize, material:state.selectedMaterial, qty: state.qty
+        });
+      }
+      saveCart();
+      // Soft feedback
+      flashAddToCart();
+    }
+
+    function flashAddToCart(){
+      const bar = document.getElementById('stickyBar');
+      bar.animate([{transform:'translateY(10px)', filter:'brightness(1)'},{transform:'translateY(0)', filter:'brightness(1.15)'}], {duration:300, easing:'ease-out'});
+    }
+
+    // Cart render
+    function renderCart(){
+      const list = document.getElementById('cartItems');
+      if(state.cart.length===0){
+        list.innerHTML = `<p>Your cart is empty.</p>`;
+        document.getElementById('cartSubtotal').textContent = '$0';
+        return;
+      }
+      list.innerHTML = state.cart.map((i,idx)=>`
+        <div class="cart-item">
+          <img src="${i.image}" alt="${i.name}" style="width:80px; height:80px; object-fit:cover; border-radius:12px; border:1px solid rgba(255,255,255,.08)"/>
+          <div>
+            <div style="display:flex; align-items:center; justify-content:space-between; gap:10px">
+              <div style="font-family:'Cormorant Garamond'; font-size:22px">${i.name}</div>
+              <div class="price">${fmt(i.price)}</div>
+            </div>
+            <div style="color:#bfbfbf; margin:6px 0 10px 0">${i.material} • Size ${i.size}</div>
+            <div class="qty">
+              <button data-action="dec" data-index="${idx}">−</button>
+              <span>${i.qty}</span>
+              <button data-action="inc" data-index="${idx}">+</button>
+            </div>
+          </div>
+          <button data-action="remove" data-index="${idx}" class="chip" style="justify-self:end">Remove</button>
+        </div>
+      `).join('');
+      list.querySelectorAll('button[data-action]').forEach(btn=>{
+        const i = +btn.dataset.index;
+        const action = btn.dataset.action;
+        btn.onclick = ()=>{
+          if(action==='inc'){ state.cart[i].qty += 1; }
+          if(action==='dec'){ state.cart[i].qty = Math.max(1, state.cart[i].qty-1); }
+          if(action==='remove'){ state.cart.splice(i,1); }
+          saveCart();
+          renderCart();
+        };
+      });
+      const subtotal = state.cart.reduce((a,i)=>a + i.price*i.qty, 0);
+      document.getElementById('cartSubtotal').textContent = fmt(subtotal);
+    }
+
+    // Newsletter Mock
+    document.getElementById('newsletterBtn').addEventListener('click', ()=>{
+      const val = document.getElementById('newsletterEmail').value.trim();
+      if(!val){ alert('Please enter your email'); return; }
+      alert('Thank you for joining, we will be in touch soon.');
+      document.getElementById('newsletterEmail').value = '';
+    });
+
+    // Canvas Particles
+    function goldParticles(){
+      const canvas = document.getElementById('goldCanvas');
+      const ctx = canvas.getContext('2d');
+      let w,h, dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const particles = [];
+      const COUNT = 80;
+
+      function resize(){
+        w = canvas.clientWidth; h = canvas.clientHeight;
+        canvas.width = w * dpr; canvas.height = h * dpr; ctx.scale(dpr,dpr);
+      }
+      function spawn(){
+        particles.length = 0;
+        for(let i=0;i<COUNT;i++){
+          particles.push({
+            x: Math.random()*w,
+            y: Math.random()*h,
+            r: Math.random()*2.2 + .6,
+            a: Math.random()*Math.PI*2,
+            s: Math.random()*0.6 + 0.2,
+            o: Math.random()*0.6 + 0.2
+          });
+        }
+      }
+      function draw(){
+        ctx.clearRect(0,0,w,h);
+        ctx.globalCompositeOperation = 'lighter';
+        for(const p of particles){
+          p.x += Math.cos(p.a)*p.s;
+          p.y += Math.sin(p.a)*p.s;
+          p.a += (Math.random()-.5)*0.05;
+          if(p.x<-20||p.x>w+20||p.y<-20||p.y>h+20){
+            p.x = Math.random()*w; p.y = Math.random()*h;
+          }
+          const g = ctx.createRadialGradient(p.x,p.y,0,p.x,p.y,p.r*6);
+          g.addColorStop(0, `rgba(255,255,255,${0.45*p.o})`);
+          g.addColorStop(.15, `rgba(246,231,163,${0.35*p.o})`);
+          g.addColorStop(.35, `rgba(201,168,76,${0.22*p.o})`);
+          g.addColorStop(1, `rgba(201,168,76,0)`);
+          ctx.fillStyle = g;
+          ctx.beginPath();
+          ctx.arc(p.x,p.y,p.r*4,0,Math.PI*2);
+          ctx.fill();
+        }
+        requestAnimationFrame(draw);
+      }
+      const onResize = ()=>{ resize(); spawn(); };
+      window.addEventListener('resize', onResize);
+      resize(); spawn(); draw();
+    }
+
+    // Viewer 360 interaction (placeholder rotation)
+    function viewer360(){
+      const viewer = document.getElementById('viewer');
+      const obj = document.getElementById('viewerObject');
+      let isDown = false, startX = 0, cur = 0;
+      const rotateTo = a => obj.style.transform = `rotateY(${a}deg) rotateX(12deg)`;
+      viewer.addEventListener('mousedown', (e)=>{ isDown=true; startX=e.clientX; });
+      viewer.addEventListener('mouseup', ()=>{ isDown=false; });
+      viewer.addEventListener('mouseleave', ()=>{ isDown=false; });
+      viewer.addEventListener('mousemove', (e)=>{
+        if(!isDown) return;
+        const dx = e.clientX - startX;
+        startX = e.clientX;
+        cur = (cur + dx * 0.6) % 360;
+        rotateTo(cur);
+      });
+      // Touch
+      viewer.addEventListener('touchstart', (e)=>{ isDown=true; startX=e.touches[0].clientX; }, {passive:true});
+      viewer.addEventListener('touchend', ()=>{ isDown=false; }, {passive:true});
+      viewer.addEventListener('touchmove', (e)=>{
+        if(!isDown) return;
+        const x = e.touches[0].clientX;
+        const dx = x - startX; startX = x; cur = (cur + dx * 0.6) % 360;
+        rotateTo(cur);
+      }, {passive:true});
+    }
+
+    // Custom Cursor
+    (function customCursor(){
+      const dot = document.getElementById('cursor');
+      window.addEventListener('mousemove', (e)=>{
+        dot.style.left = e.clientX+'px';
+        dot.style.top = e.clientY+'px';
+      });
+      const addHover = ()=>dot.classList.add('hover');
+      const removeHover = ()=>dot.classList.remove('hover');
+      const selectors = 'a, button, .chip, .card, .featured-item, input';
+      document.addEventListener('mouseover', e=>{
+        if(e.target.closest(selectors)) addHover();
+      });
+      document.addEventListener('mouseout', e=>{
+        if(e.target.closest(selectors)) removeHover();
+      });
+    })();
+
+    // Init
+    buildFeatured();
+    buildEditorial();
+    buildShop();
+    goldParticles();
+    viewer360();
+    updateCartCount();
+    renderRoute();
+
+    // Delegate data-link for SPA-like feel
+    document.querySelectorAll('[data-link]').forEach(a=>{
+      a.addEventListener('click', (e)=>{
+        // allow hash default
+      });
+    });
+
+    // Simple checkout mock
+    document.getElementById('checkoutBtn').addEventListener('click', ()=>{
+      if(state.cart.length===0){ alert('Your cart is empty.'); return; }
+      alert('Checkout is not implemented in this demo.');
+    });
+
+    // Pause marquee on hover
+    const scroller = document.getElementById('featuredScroller');
+    scroller.addEventListener('mouseenter', ()=> scroller.style.animationPlayState='paused');
+    scroller.addEventListener('mouseleave', ()=> scroller.style.animationPlayState='running');
+
+  </script>
+</body>
+</html>

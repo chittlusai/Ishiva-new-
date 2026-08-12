@@ -1,0 +1,36 @@
+.note-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.note-card::after {
+  content: '♪';
+  position: absolute;
+  right: 14px;
+  top: 14px;
+  font-weight: 700;
+  opacity: 0;
+  transform: translateY(6px) rotate(-10deg) scale(0.95);
+  transition: opacity 200ms ease, transform 250ms ease;
+  color: #f5d000;
+  text-shadow: 0 0 18px rgba(245, 208, 0, 0.35);
+  pointer-events: none;
+}
+
+.note-card:hover::after {
+  opacity: 1;
+  transform: translateY(0) rotate(0deg) scale(1);
+  animation: note-float 850ms ease-in-out infinite;
+}
+
+@keyframes note-float {
+  0% {
+    transform: translateY(0) rotate(0deg) scale(1);
+  }
+  50% {
+    transform: translateY(-6px) rotate(6deg) scale(1.02);
+  }
+  100% {
+    transform: translateY(0) rotate(0deg) scale(1);
+  }
+}
